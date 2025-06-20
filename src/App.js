@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./components/Home";
+import BooksList from "./components/BooksList";
+import SingleBook from "./components/SingleBook";
+import Navbar from "./components/Navbar";
+import Profile from "./components/users/Profile";
+import Register from "./components/users/Register";
+import Login from "./components/users/Login";
+import AuthProvider from "./Auth/AuthProvider";
+import LogOut from "./components/users/LogOut";
+import ProtectedRoute from "./Auth/ProtectedRoutes";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <AuthProvider>
+          <Navbar/>
+          <Routes>
+            <Route path="/" Component={Home} />
+            <Route path="/register" Component={Register} />
+            <Route path="/login" Component={Login} />
+            <Route element={<ProtectedRoute/>}>
+              <Route path="/logout" Component={LogOut} />
+              <Route path="/books" Component={BooksList} />
+              <Route path="/books/:bookId" Component={SingleBook} />
+              <Route path="/profile" Component={Profile} />
+            </Route>
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+    </>
   );
 }
 

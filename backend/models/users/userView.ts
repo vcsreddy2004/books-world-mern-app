@@ -6,5 +6,6 @@ export interface UserView {
     password:string,
     token:string,
     lastLogIn:Date | null,
+    isAdmin:boolean
     errorMessage:string
 }

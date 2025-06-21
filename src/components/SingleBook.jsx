@@ -8,7 +8,7 @@ export default function SingleBook() {
   const navigator = useNavigate();
   const [review, setReview] = useState({ bookId: bookId, rating: 0, comment: "" });
   const [reviewsList,setReviewsList] = useState([]);  
-  useEffect(()=>{
+  useEffect(()=>{ 
     BookService.getBook(bookId).then((res)=>{
       setBook(res.data);
     }).catch(()=>{

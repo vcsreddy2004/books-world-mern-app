@@ -3,6 +3,7 @@ import config from "../config";
 import { IUser } from "../models/users/IUser";
 import User from "../models/users/User";
 import jwt from "jsonwebtoken";
+import { UserView } from "../models/users/userView";
 const AuthLogin = async (req:express.Request,res:express.Response,next:express.NextFunction) => {
     try
     {
@@ -38,7 +39,7 @@ const AuthLogin = async (req:express.Request,res:express.Response,next:express.N
                     }
                     else
                     {
-                        let userData = {
+                        let userData:UserView = {
                             firstName:user.firstName,
                             lastName:user.lastName,
                             email:user.email,
@@ -46,6 +47,7 @@ const AuthLogin = async (req:express.Request,res:express.Response,next:express.N
                             password:"",
                             errorMessage:"",
                             lastLogIn:user.lastLogIn,
+                            isAdmin:user.isAdmin,
                             token:""
                         }
                         req.body.user = userData;

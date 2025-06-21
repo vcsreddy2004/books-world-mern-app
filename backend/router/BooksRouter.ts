@@ -29,19 +29,25 @@ BookRouter.post("/upload", AuthLogin, async (req, res) => {
     let user = req.body.user;
     let bookData:BookView = {
         title:req.body.title,
-        author:req.body.auther,
+        author:req.body.author,
         description:req.body.description,
         publishedYear:req.body.publishedYear,
         errorMessage:"",
     }
-    if (user.userName !== "admin") return res.status(403).json({ errorMessage: "Admin access required" });
     try {
-        const newBook = new Book(bookData);
-        const savedBook = await newBook.save();
-        return res.status(201).json(savedBook);
+        if(user.isAdmin) {
+            const newBook = new Book(bookData);
+            const savedBook = await newBook.save();
+            return res.status(201).json(savedBook);
+        }
+        else {
+            bookData = {} as BookView;
+            bookData.errorMessage = "you have no access to this service";
+            return res.status(401).json(bookData);
+        }
     } 
     catch (error) {
-        return res.status(500).json({ errorMessage: "Failed to add book" });
+        return res.status(500).json({ errorMessage: "Failed to add book",error:error });
     }
 });
 

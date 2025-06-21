@@ -5,5 +5,6 @@ export interface IUser extends Document {
     email:string,
     userName:string,
     password:string,
-    lastLogIn:Date
+    lastLogIn:Date,
+    isAdmin:boolean,
 }

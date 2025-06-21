@@ -18,6 +18,7 @@ userRouter.post("/register",async(req:express.Request,res:express.Response)=>{
             password:req.body.password,
             token:"",
             lastLogIn:null,
+            isAdmin:req.body.isAdmin || false,
             errorMessage:""
         }
         let user:IUser | null = await User.findOne({ $or: [{userName:userData.userName},{email:userData.email}]});
@@ -64,6 +65,7 @@ userRouter.post("/login",async(req:express.Request,res:express.Response)=>{
             password:req.body.password,
             token:"",
             lastLogIn:null,
+            isAdmin:false,
             errorMessage:""
         }
         let user:IUser | null = await User.findOne({userName:userData.userName});
@@ -158,6 +160,7 @@ userRouter.post("/get-user-data",AuthLogin,async(req:express.Request,res:express
             password:"",
             token:"",
             lastLogIn:req.body.user.lastLogIn,
+            isAdmin:false,
             errorMessage:""
         }
         return res.status(200).json(userData);

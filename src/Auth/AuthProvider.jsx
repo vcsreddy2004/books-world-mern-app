@@ -9,7 +9,6 @@ export const AuthContext = createContext({
 export default function AuthProvider({ children }) {
     const [userData, setUserData] = useState({});
     const navigate = useNavigate();
-
     const getData = () => {
         UserService.getUserData().then((res)=>{
             setUserData({
@@ -23,7 +22,6 @@ export default function AuthProvider({ children }) {
             setUserData({});
         })
     };
-
     useEffect(() => {
         getData();
     }, []);

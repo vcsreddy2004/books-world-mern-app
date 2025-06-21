@@ -11,13 +11,14 @@ const ProtectedRoute = () => {
             try {
                 await UserService.getUserData();  
                 setIsLoggedIn(true);
-            } catch (error) {
+            } 
+            catch (error) {
                 setIsLoggedIn(false); 
-            } finally {
+            } 
+            finally {
                 setLoading(false);  
             }
         };
-
         checkAuth();
     }, []); 
 

@@ -42,7 +42,7 @@ userRouter.post("/register",async(req:express.Request,res:express.Response)=>{
         }
         else
         {
-            let salt:string = await bcrypt.genSalt(10);
+            const salt:string = await bcrypt.genSalt(10);
             userData.password = await bcrypt.hash(userData.password,salt);
             user = new User(userData);
             user.save();
@@ -73,14 +73,14 @@ userRouter.post("/login",async(req:express.Request,res:express.Response)=>{
         {
             if(await bcrypt.compare(userData.password,user.password))
             {
-                let currentDate = new Date();
+                const currentDate = new Date();
                 if(user.lastLogIn)
                 {
-                    let loginLimit = new Date(user.lastLogIn);
+                    const loginLimit = new Date(user.lastLogIn);
                     loginLimit.setHours(loginLimit.getHours() + 4);
                     if (currentDate > loginLimit) 
                     {
-                        let payLoad = {
+                        const payLoad = {
                             email:user.email,
                             userName:user.userName
                         }
@@ -88,7 +88,7 @@ userRouter.post("/login",async(req:express.Request,res:express.Response)=>{
                         if(config.SECRETE_KEY)
                         {
                             await User.findOneAndUpdate({userName:user.userName},{lastLogIn:new Date()},{ new: true } );
-                            let token = await jwt.sign(payLoad,config.SECRETE_KEY)
+                            const token = await jwt.sign(payLoad,config.SECRETE_KEY)
                             userData.errorMessage = "";
                             res.cookie("token",token,{httpOnly:true,sameSite:"lax",secure:false});
                             return res.status(200).json(userData);
@@ -106,7 +106,7 @@ userRouter.post("/login",async(req:express.Request,res:express.Response)=>{
                 }
                 else
                 {
-                    let payLoad = {
+                    const payLoad = {
                         email:user.email,
                         userName:user.userName
                     }
@@ -114,7 +114,7 @@ userRouter.post("/login",async(req:express.Request,res:express.Response)=>{
                     if(config.SECRETE_KEY)
                     {
                         await User.findOneAndUpdate({userName:user.userName},{lastLogIn:new Date()},{ new: true } );
-                        let token = await jwt.sign(payLoad,config.SECRETE_KEY)
+                        const token = await jwt.sign(payLoad,config.SECRETE_KEY)
                         res.cookie("token",token,{httpOnly:true,sameSite:"lax",secure:false});
                         return res.status(200).json(userData);
                     }
@@ -152,7 +152,7 @@ userRouter.post("/logout",AuthLogin,async(req:express.Request,res:express.Respon
 userRouter.post("/get-user-data",AuthLogin,async(req:express.Request,res:express.Response)=>{
     try
     {
-        let userData:UserView = {
+        const userData:UserView = {
             firstName:req.body.user.firstName,
             lastName:req.body.user.lastName,
             email:req.body.user.email,
@@ -160,7 +160,7 @@ userRouter.post("/get-user-data",AuthLogin,async(req:express.Request,res:express
             password:"",
             token:"",
             lastLogIn:req.body.user.lastLogIn,
-            isAdmin:false,
+            isAdmin:req.body.user.isAdmin,
             errorMessage:""
         }
         return res.status(200).json(userData);
